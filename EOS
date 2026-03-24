@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q1 2026 Engineering / Product — Work Tracker</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f6f9; color: #1a1d23; font-size: 14px; }
+
+  header { background: linear-gradient(135deg, #1e2a45 0%, #2e4080 100%); color: white; padding: 28px 32px; }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  header p { margin-top: 4px; opacity: 0.7; font-size: 13px; }
+
+  .summary-bar { display: flex; gap: 12px; flex-wrap: wrap; padding: 20px 32px; background: white; border-bottom: 1px solid #e2e8f0; }
+  .stat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 20px; min-width: 110px; text-align: center; }
+  .stat .num { font-size: 26px; font-weight: 700; color: #2e4080; }
+  .stat .lbl { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .stat.total .num { color: #1e2a45; }
+  .stat.done .num { color: #16a34a; }
+  .stat.prog .num { color: #d97706; }
+  .stat.block .num { color: #dc2626; }
+  .stat.scope .num { color: #7c3aed; }
+
+  main { padding: 24px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+  .section { background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+  .section-header { padding: 16px 20px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header h2 { font-size: 15px; font-weight: 700; color: #1e2a45; flex: 1; }
+  .section-header .chevron { font-size: 12px; color: #94a3b8; transition: transform 0.2s; }
+  .section-header.collapsed .chevron { transform: rotate(-90deg); }
+
+  .subsection { border-top: 1px solid #e2e8f0; }
+  .subsection-title { padding: 10px 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #64748b; background: #fafbfc; border-bottom: 1px solid #f0f2f5; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { background: #f8fafc; padding: 9px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; border-bottom: 1px solid #e2e8f0; }
+  tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafbff; }
+  td { padding: 10px 16px; vertical-align: top; line-height: 1.5; }
+  td:first-child { font-weight: 500; color: #1a1d23; max-width: 320px; }
+  td .epic-link { font-size: 12px; color: #2e4080; text-decoration: none; font-weight: 500; background: #eff4ff; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+  td .epic-link:hover { background: #dce8ff; }
+
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .b-completed   { background: #dcfce7; color: #15803d; }
+  .b-inprogress  { background: #fef9c3; color: #92400e; }
+  .b-blocked     { background: #fee2e2; color: #b91c1c; }
+  .b-scoping     { background: #ede9fe; color: #6d28d9; }
+  .b-notstarted  { background: #f1f5f9; color: #64748b; }
+  .b-unplanned   { background: #fce7f3; color: #9d174d; font-size: 10px; }
+  .b-planned     { background: #e0f2fe; color: #0369a1; font-size: 10px; }
+
+  .section-body { display: block; }
+  .section-body.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Q1 2026 Engineering / Product — Work Tracker</h1>
+  <p>Status as of March 18, 2026</p>
+</header>
+
+<div class="summary-bar">
+  <div class="stat total"><div class="num">64</div><div class="lbl">Total</div></div>
+  <div class="stat done"><div class="num">50</div><div class="lbl">Completed</div></div>
+  <div class="stat prog"><div class="num">7</div><div class="lbl">In Progress</div></div>
+  <div class="stat block"><div class="num">3</div><div class="lbl">Blocked</div></div>
+  <div class="stat scope"><div class="num">6</div><div class="lbl">In Scoping</div></div>
+  <div class="stat" style="margin-left:auto;">
+    <div class="num" style="color:#2e4080">40</div><div class="lbl">Planned</div>
+  </div>
+  <div class="stat">
+    <div class="num" style="color:#9d174d">24</div><div class="lbl">Unplanned</div>
+  </div>
+</div>
+
+<main>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>1. Marketplace Launch &amp; Affiliate Activation</h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+    <div class="subsection">
+      <div class="subsection-title">Planned</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>CRO Applications V3 Flow</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MAR-768" target="_blank">MAR-768</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Commission Logic</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MAR-746" target="_blank">MAR-746</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Bond &amp; Licenses V3</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MAR-783" target="_blank">MAR-783</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Multi State Integration</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MAR-807" target="_blank">MAR-807</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>CRO Marketplace Application V2 Flow</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MAR-808" target="_blank">MAR-808</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>MVP Feedback</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MAR-674" target="_blank">MAR-674</a></td><td><span class="badge b-inprogress">QA Demo — additional changes in testing</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Affiliate Program</td><td>—</td><td><span class="badge b-scoping">In Scoping</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>2. Product Adoption &amp; Revenue Growth</h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — Marketing Hub (GHL)</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Integrate CRC Client Status with Round Selector (1–12) and Score Update Automation</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7163" target="_blank">SB-7163</a></td><td><span class="badge b-scoping">In Scoping</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Route CRC Marketing Hub replies into GHL Conversation Tab</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7292" target="_blank">SB-7292</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Add Tag for New Sub-Accounts in CRC Marketing Hub</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7223" target="_blank">SB-7223</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — CHS Enhancements</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Auto-Order Free Reports in CRC Import Flow</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-6844" target="_blank">SB-6844</a></td><td><span class="badge b-blocked">Waiting — design &amp; flow changes from Adam</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Update Import Error Models</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7259" target="_blank">SB-7259</a></td><td><span class="badge b-completed">Completed — stakeholder review</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Integrate Array PiP webhooks with SendGrid (Online Privacy Protection Emails)</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7009" target="_blank">SB-7009</a></td><td><span class="badge b-inprogress">In Progress — by 27 Mar</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Build Monthly CHS Engagement &amp; Credit Alert Emails</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7221" target="_blank">SB-7221</a></td><td><span class="badge b-inprogress">In Progress — by 27 Mar</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Create Internal Archive of Sent SendGrid Emails</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7111" target="_blank">SB-7111</a></td><td><span class="badge b-completed">Completed — prod 10 Feb</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Implement All Existing CHS Transactional Emails Using Array Webhooks &amp; New Design Template</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7213" target="_blank">SB-7213</a></td><td><span class="badge b-blocked">Received Mar 11 — needs webhook info from Adam</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>CHS to CRC Migration Tool</td><td>—</td><td><span class="badge b-scoping">In Scoping</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Set Up CHS Marketing Capabilities</td><td>—</td><td><span class="badge b-scoping">In Scoping</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Set Up Net New Transactional CHS Emails</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7460" target="_blank">SB-7460</a></td><td><span class="badge b-inprogress">Received Mar 11</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Integrate Array Identity Protect Webhooks (IDP) with SendGrid (ID Alert Emails)</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7195" target="_blank">SB-7195</a></td><td><span class="badge b-inprogress">In Progress — by 27 Mar</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — Billing</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Manage Plans &gt; Create New Plan</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-6298" target="_blank">SB-6298</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Unplanned — Marketing Hub (GHL)</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Request to Add Start Date Field to Snapshot</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7286" target="_blank">SB-7286</a></td><td><span class="badge b-completed">Completed — prod 28 Jan</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Open up CRC Marketing Hub to include trial users</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7357" target="_blank">SB-7357</a></td><td><span class="badge b-completed">Completed — prod 16 Mar</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>CRITICAL: Update GHL API Scopes to fix Sub-account Billing/Details Access</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CO-18841" target="_blank">CO-18841</a></td><td><span class="badge b-completed">Completed — prod 26 Feb</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>GHL 2-way Sync</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-6964" target="_blank">SB-6964</a></td><td><span class="badge b-completed">Completed — prod 8 Jan</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Unplanned — CHS Enhancements</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Develop Import-Error Webhook in Zapier for Error Escalations (Prod-321)</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7022" target="_blank">SB-7022</a></td><td><span class="badge b-blocked">Waiting — Adam to configure Zaps</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Update CHS Dunning Email Templates and Delivery Cadence</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7124" target="_blank">SB-7124</a></td><td><span class="badge b-completed">Completed — prod 19 Jan</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Add "Not Recommended" Labels and Warning Video for Competitor Credit Monitoring Providers</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7459" target="_blank">SB-7459</a></td><td><span class="badge b-inprogress">In Progress</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Unplanned — Billing</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Add Logic to Update Subscription State and Billing Dates on Late Payment Method Addition</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CPP-4005" target="_blank">CPP-4005</a></td><td><span class="badge b-completed">Completed — prod 25 Feb</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Modify Delinquent Flow to Allow Existing Card Reuse</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CPP-4004" target="_blank">CPP-4004</a></td><td><span class="badge b-completed">Completed — prod 22 Feb</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+  <div class="section-header" onclick="toggle(this)">
+    <h2>3. Platform Modernization &amp; AI Foundation</h2>
+    <span class="chevron">▼</span>
+  </div>
+  <div class="section-body">
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — Credit Repair Cloud (CRC)</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Implement CRC Side Navigation</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SN-1" target="_blank">SN-1</a></td><td><span class="badge b-inprogress">Pending: Message, Plan Nav Variants, Notification &amp; Beta</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Sign Up Version Upgrade</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CIR-365" target="_blank">CIR-365</a></td><td><span class="badge b-inprogress">Testing / bugfixing — releasing next week</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Application Server Stack (Apache, PHP, OS)</td><td>—</td><td><span class="badge b-inprogress">Ongoing — Auth done; Sign Up &amp; CloudMail pending</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Legacy MySQL / MariaDB client versions</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>CRC Authentication Service Upgrade</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CIR-505" target="_blank">CIR-505</a></td><td><span class="badge b-inprogress">Dev complete — testing pending</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>CloudMail and AI Letters</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CIR-531" target="_blank">CIR-531</a></td><td><span class="badge b-inprogress">In Progress — dev completing by 27 Mar</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>AI Letters</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CIR-564" target="_blank">CIR-564</a></td><td><span class="badge b-inprogress">In Progress — dev completing by 27 Mar</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>CRC New Onboarding Feature</td><td>—</td><td><span class="badge b-scoping">In Scoping</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>RDS instances running MariaDB 10.6.x (approaching EOL)</td><td>—</td><td><span class="badge b-notstarted">Not Started</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migrate Uploads Folder to S3</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7014" target="_blank">SB-7014</a></td><td><span class="badge b-completed">Completed — prod 26 Feb</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — Secure Client Access (SCA)</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>SCA React for Web</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SWARM-6" target="_blank">SWARM-6</a></td><td><span class="badge b-inprogress">Client Flow Settings pending; Affiliate Flow in progress</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>SCA Flutter for Mobile App</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SCAMOB-804" target="_blank">SCAMOB-804</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>SCA Mobile App Enhancements</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>SCA Server Stack (Apache, Java, OS, NodeJs, React)</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — DevOps</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>PHP Version Upgrade</td><td>—</td><td><span class="badge b-inprogress">Done for CHS, Dunning, AI Letters, OAuth; CloudMail in progress</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>UI Decoupling: Stabilize infrastructure for decoupled frontend and backend</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Microservices Dockerization</td><td>—</td><td><span class="badge b-inprogress">Done for SCA, CHS, Dunning, AI Letters; CloudMail in progress</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Jenkins to Bitbucket Pipelines Migration</td><td>—</td><td><span class="badge b-inprogress">In Progress</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>AI Integration in DevOps (ongoing)</td><td>—</td><td><span class="badge b-completed">Claude rollout completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Marketplace Stage &amp; Prod Environment Configuration</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>EFS Uploads Folder Migration to S3</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Planned — Java Microservices</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Migration of Clients Module to Microservices (CRUD &amp; Listing)</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-105" target="_blank">MD-105</a></td><td><span class="badge b-inprogress">In Progress</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migration of Creditors and Furnishers to Microservices</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-192" target="_blank">MD-192</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migration of Dispute Items to Microservices</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-254" target="_blank">MD-254</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migration of Educate to Microservices</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-248" target="_blank">MD-248</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migration of Invoices to Microservices</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-179" target="_blank">MD-179</a></td><td><span class="badge b-inprogress">In Progress</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migration of Activity to Microservices</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-255" target="_blank">MD-255</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Create Commons Repository for Shared Microservices Functionality</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-206" target="_blank">MD-206</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+          <tr><td>Migration of CRO Data to Keycloak</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/MD-253" target="_blank">MD-253</a></td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-planned">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Unplanned — CRC</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Verify the Replit Fin Connector Provided by Keenan &amp; Riz</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7416" target="_blank">SB-7416</a></td><td><span class="badge b-completed">Completed — 23 Feb</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Document Storage Limit Showing Only 10 Most Recent Items</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CO-18579" target="_blank">CO-18579</a></td><td><span class="badge b-completed">Completed — prod 21 Jan</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Implement Logic to Allow Grid for CRC Accounts Not Connected to Affiliate Portal</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7406" target="_blank">SB-7406</a></td><td><span class="badge b-completed">Completed — prod 11 Mar</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>TSR Compliance — Audit Tool Enhancements</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7313" target="_blank">SB-7313</a></td><td><span class="badge b-completed">Completed — prod 12 Mar</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Add Warning Message for Discover Card Transaction</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7239" target="_blank">SB-7239</a></td><td><span class="badge b-completed">Completed — prod 27 Jan</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Add Canadian Address Option to Self-Service Checkout Page</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7186" target="_blank">SB-7186</a></td><td><span class="badge b-completed">Completed — prod 2 Mar</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>MFSN New Platform Integration &amp; JSON Validation</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7303" target="_blank">SB-7303</a></td><td><span class="badge b-completed">Completed — prod 11 Feb</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Implement Weighted Logic for CHS</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7404" target="_blank">SB-7404</a></td><td><span class="badge b-completed">Completed — releasing next week</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Credit Inquiries Matching Logic Improvements</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/CO-18653" target="_blank">CO-18653</a></td><td><span class="badge b-completed">Completed — prod 18 Mar</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Discount Removal When Upgrading from Monthly to Annual Plan</td><td><a class="epic-link" href="https://creditrepaircloud.atlassian.net/browse/SB-7431" target="_blank">SB-7431</a></td><td><span class="badge b-completed">Completed — prod 16 Mar</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Writing and Implementing AI Workflows Across the Development Lifecycle</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>AI Agentic Workflows for Microservices Migration from PHP to Java</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Preparing the OpenAPI Documentation for the APIs</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+          <tr><td>Migrated Uploads Folder from EFS to AWS S3</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Unplanned — DevOps</div>
+      <table>
+        <thead><tr><th>Task</th><th>Epic</th><th>Status</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Sentry Integration</td><td>—</td><td><span class="badge b-completed">Completed</span></td><td><span class="badge b-unplanned">Unplanned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<script>
+  function toggle(header) {
+    header.classList.toggle('collapsed');
+    header.nextElementSibling.classList.toggle('hidden');
+  }
+</script>
+</body>
+</html>
